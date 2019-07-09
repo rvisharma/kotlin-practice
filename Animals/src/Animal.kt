@@ -1,20 +1,24 @@
-import javax.lang.model.element.AnnotationMirror
+interface Roamable {
+    fun roam()
+}
 
-open class Animal {
-    open val image = ""
-    open val food = ""
-    open val habitat = ""
+
+class Vehicle : Roamable {
+    override fun roam() {
+        println("The Vehicle is roaming")
+    }
+}
+
+abstract class Animal : Roamable {
+    abstract val image: String
+    abstract val food: String
+    abstract val habitat: String
     var hunger = 10
 
-    open fun makeNoise() {
-        println("The Animal is making a noise")
-    }
+    abstract fun makeNoise()
+    abstract fun eat()
 
-    open fun eat() {
-        println("The Animal is eating")
-    }
-
-    open fun roam() {
+    override fun roam() {
         println("The Animal is roaming")
     }
 
@@ -33,11 +37,11 @@ class Hippo : Animal() {
     }
 
     override fun eat() {
-        println("The Hippo is eating")
+        println("The Hippo is eating $food")
     }
 }
 
-open class Canine : Animal() {
+abstract class Canine : Animal() {
     override fun roam() {
         println("The Canine is roaming")
     }
@@ -83,4 +87,19 @@ fun main() {
     vet.giveShot(wolf)
     vet.giveShot(hippo)
 
+    println("--------------")
+
+    val roamable: Array<Roamable> = arrayOf(
+        Hippo(),
+        Wolf(),
+        Vehicle()
+    )
+
+    for (item in roamable) {
+        item.roam()
+
+        if (item is Animal) {
+            item.eat()
+        }
+    }
 }
